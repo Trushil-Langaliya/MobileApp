@@ -1,0 +1,203 @@
+import React, { useCallback, useState, useEffect } from 'react';
+import { View, Image, StyleSheet, TouchableOpacity, ScrollView, Text, Dimensions, Alert } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { List } from '../../../components/list';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import * as Progress from 'react-native-progress';
+import { Btn, CustomImg, TextBold } from '../../../components/CommanComponents';
+import commanStyles from '../../../../styles/commanStyles';
+
+//Main Function
+const Step3 = ({ navigation }) => {
+
+
+    const checkInSteps = [
+        {
+            id: '1',
+            title: 'Grammer',
+        },
+        {
+            id: '2',
+            title: 'Listening',
+        },
+        {
+            id: '3',
+            title: 'Reading',
+        },
+        {
+            id: '4',
+            title: 'Speaking',
+        },
+        {
+            id: '5',
+            title: 'Writing',
+        },
+    ];
+
+    var checkInresults = [
+        {
+            id: '1',
+            title: 'Need a break',
+            percentage: 0,
+            click: false,
+        },
+        {
+            id: '2',
+            title: 'Need more',
+            percentage: 20,
+            click: false,
+        },
+        {
+            id: '3',
+            title: 'Need the Same',
+            percentage: 80,
+            click: false,
+        },
+    ];
+
+    const [open, setOpen] = useState(false)
+    const [openNumber, setOpenNumber] = useState('')
+
+    const OpenDropdown = (id) => {
+        console.log("id is:;", id)
+        setOpen(!open)
+        setOpenNumber(id)
+    }
+    //design of recent steps
+    const Steps = ({ item }) => (
+        <View>
+            <View style={{ height: height / 12, width: width, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity style={{ height: "100%", width: "100%", justifyContent: 'center', alignItems: 'center' }} onPress={() => OpenDropdown(item.id)}>
+                    <View style={[styles.item, { width: '90%', height: '100%', flexDirection: 'row', alignItems: 'center', borderRadius: 10 }]}>
+                        <View style={{ flexDirection: 'column', width: '100%' }}>
+                            <TextBold children={item.title} size={height / 35} />
+                            <View style={{ marginVertical: 5 }} />
+                            <View style={{ height: 2, backgroundColor: '#E6E9F1', width: '100%' }} />
+                        </View>
+                    </View>
+                    <View style={{ width: 30, height: 30, position: 'absolute', right: 30 }}>
+                        <Btn height='100%' width='100%' radius={30} onPress={() => OpenDropdown(item.id)}>
+                            <CustomImg src={require('../../../../../assets/right_arrow.png')} height={25} width={25} />
+                        </Btn>
+                    </View>
+                </TouchableOpacity>
+            </View>
+            {
+                open ? openNumber == item.id ? <List data={checkInresults} renderItem={ResultItem} /> : null : null
+            }
+
+        </View>
+    );
+
+    const pressClick = (item, index) => {
+
+        console.log("index is::", index)
+        // for(i=0; i<checkInresults.length; i++){
+        //     if(checkInresults[index].click==false){
+        //         console.log("id is::",checkInresults[index].id)
+        //         console.log("click is::",checkInresults[index].click)
+        //         checkInresults[index].click = true;
+        //      break;
+        //     }  
+        // }
+        // console.log("clicks is::",checkInresults[index].click)
+        // setOpen(open)
+    }
+    //design of recent steps
+    const [pressed, setPressed] = useState(false);
+    const ResultItem = ({ item, index }) => {
+
+
+        const onPress = () => {
+            setPressed(prevPressed => !prevPressed);
+        }
+        return (
+            <View style={{ height: height / 12, width: width, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity style={{ height: "100%", width: "100%", justifyContent: 'center', alignItems: 'center' }} onPress={onPress}>
+                    <View style={[styles.item, pressed == true ? { backgroundColor: '#1B45AF' } : { backgroundColor: '#E6E9F1' }, { width: '90%', height: '80%', flexDirection: 'row', alignItems: 'center', borderRadius: 20 }]}>
+                        <View style={{ flexDirection: 'column', marginLeft: height / 30 }}>
+                            <TextBold children={item.title} size={height / 40} color={pressed == true ? 'white' : 'black'} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    };
+
+    const btnSave = () => {
+        navigation.navigate('Step2')
+    }
+    //Return  View
+    return (
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <View style={[commanStyles.mainView, { backgroundColor: 'white' }]}>
+                <ScrollView>
+                    <View style={{ alignItems: 'center', width: '95%', alignSelf: 'center' }}>
+                        {/* Check In title */}
+                        <View style={styles.viewCheckin}>
+                            <TextBold children="Refelct on next steps" size={height / 30} />
+                        </View>
+
+                        {/* Tell us Text */}
+                        <View style={styles.ViewTellus}>
+                            <View style={styles.subviewTellus}>
+                                <TextBold children="Tell us what you'd like to focus on next month." size={height / 60} textAlign="center" />
+                            </View>
+                        </View>
+
+                        <View style={{ marginVertical: 10 }} />
+                        <View style={{ height: height / 3.5, width: '100%' }}>
+                            <CustomImg src={require('../../../../../assets/img1.png')} width="100%" height="100%" resizeMode="cover" radius={20} />
+                        </View>
+
+                        <View style={{ marginVertical: 10 }} />
+                        <View style={open == true ? { height: height - 120 } : { height: height / 2.3 }}>
+                            <List data={checkInSteps} renderItem={Steps} />
+                        </View>
+
+                        <Btn children="Save" width="90%" height={height / 15} color="#1B45AF" txtClr="white" radius={20} txtSize={height / 35} onPress={btnSave} />
+                        <View style={{ marginVertical: 40 }} />
+                        <View style={{ position: 'absolute', right: 25, bottom: 10, height: 60, width: 60, borderRadius: 30, }}>
+                            <Btn height='100%' width='100%' radius={30} color='#1B45AF' >
+                                <FontAwesomeIcon icon={faAngleRight} size={25} color="#fff" />
+                            </Btn>
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
+        </SafeAreaView>
+    );
+};
+
+// Styles
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
+
+const styles = StyleSheet.create({
+    viewCheckin: {
+        height: height / 16,
+        width: '80%',
+        alignSelf: 'center'
+    },
+    ViewTellus: {
+        height: height / 16,
+        width: '100%',
+        alignSelf: 'center',
+        backgroundColor: '#E6E9F1',
+        borderRadius: 10,
+        justifyContent: 'center'
+    },
+    subviewTellus: {
+        height: '80%',
+        width: '98%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 10
+    }
+});
+
+export default Step3
