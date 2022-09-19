@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React, {useEffect } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, ScrollView, Text, Dimensions, Alert } from 'react-native';
 import { List } from '../../components/list';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,16 +6,48 @@ import { Btn, CustomImg, TextBold, TextRegular } from '../../components/CommanCo
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import commanStyles from '../../../styles/commanStyles';
+import { useIsFocused } from "@react-navigation/native";
+import * as Store from '../../components/auth/Store'
 
 //Main Function
 const Checkin = ({ navigation }) => {
+ //View will appear 
+ const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+        setTimeout(async () => {
+          
+            var userStoredToken = await Store.getData(Store.userToken)
+            // var userStoredToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N1ZXIiOiJodHRwczovL2xhYy10ZXN0LWFwaS5oZXJva3VhcHAuY29tIiwiaWF0IjoxNjYyMDM1OTYyNzg2LCJhdWRpZW5jZSI6WyJodHRwOi8vbG9jYWxob3N0LyIsImh0dHBzOi8vbGFjLXRlc3Qtc2l0ZS5oZXJva3VhcHAuY29tIl0sInN1YmplY3QiOiI2MzBmMjE4ZDdmNWYyZjMyNmM1MTIyNzgiLCJzY29wZSI6WyJjbGllbnQiXSwic3RhdHVzIjoiYWN0aXZlIiwiZXhwIjoxNjYyMDM1OTY2Mzg2fQ.vj-HMgKtWGgnzI0DFrB5h69GsLw5mJSAaafXWvrlrSA'
+            return fetch(`https://lac-test-api.herokuapp.com/api/v1/checkIn`
+                , {
+                    method: `GET`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${userStoredToken}`
+                    },
+                }
+            )
+                .then((response) => response.json())
+                .then(response => {
+                    // console.log("checkIn API response :::", response.data.measureYourProgress[0]);
+                    Store.setData(Store.checkin, response)
+                })
+                .catch(error => {
+                    console.error(`Error: ${error}`)
+                });
+
+        })
+    }
+}, [isFocused]);
 
 
   const checkInSteps = [
     {
       id: '1',
       title: 'STEP 1',
-      subtitle: 'Mesuare your progress',
+      subtitle: 'Measuare your progress',
       image: require("../../../../assets/graph.png"),
     },
     {
@@ -35,6 +67,7 @@ const Checkin = ({ navigation }) => {
   const Next = () => {
     navigation.navigate('CheckInSteps')
   }
+
 
   //design of recent plans & objectives
   const Item = ({ title, image, subtitle }) => (
@@ -74,12 +107,12 @@ const Checkin = ({ navigation }) => {
               <View style={styles.subViewMsgbox}>
                 <View style={styles.sub2ViewMsgbox}>
                   <View style={{ flexDirection: 'row' }}>
-                    <TextBold children="Maria," size={height / 55} />
-                    <TextRegular children="You smashed the month of July" size={height / 55} textAlign="left" />
+                    <TextBold children="Maria," size={height / 70} />
+                    <TextRegular children="You smashed the month of July" size={height / 70} textAlign="left" />
                   </View>
-                  <TextRegular children="Beginner Course A1/A2" size={height / 55} textAlign="left" />
+                  <TextRegular children="Beginner Course A1/A2" size={height / 70} textAlign="left" />
                   <View style={{ marginVertical: 10 }} />
-                  <TextRegular children="Now, you can check-in. it only takes 10 minutes. And once you're done you're onto your next month." size={height / 55} textAlign="left" />
+                  <TextRegular children="Now, you can check-in. it only takes 10 minutes. And once you're done you're onto your next month." size={height / 70} textAlign="left" />
                 </View>
               </View>
             </View>
@@ -133,7 +166,7 @@ const styles = StyleSheet.create({
   },
 
   viewMsgbox: {
-    height: height / 5,
+    height: 150,
     width: '100%',
     backgroundColor: 'lightgrey',
     borderRadius: 20,

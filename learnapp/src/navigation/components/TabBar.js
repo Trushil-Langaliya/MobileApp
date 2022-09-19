@@ -14,6 +14,8 @@ import CheckInSteps from '../screens/CheckIn/CheckinSteps';
 import Step2 from '../screens/CheckIn/CheckinStep2/Step2';
 import Step2Review from '../screens/CheckIn/CheckinStep2/Step2Review';
 import Step3 from '../screens/CheckIn/CheckinStep3/Step3';
+import Step1Review from '../screens/CheckIn/CheckinStep1/Step1Review';
+import Step3Review from '../screens/CheckIn/CheckinStep3/Step3Review';
 
 
 //Main Function
@@ -39,10 +41,11 @@ const TabBar = ({ navigation }) => {
                     <HomeStack.Screen name="CalenderScreen" component={CalenderScreen} options={{ headerShown: false }} />
                     <HomeStack.Screen name="Checkin" component={Checkin} options={{ headerShown: false }} />
                     <HomeStack.Screen name="CheckInSteps" component={CheckInSteps} options={{ headerShown: false }} /> 
+                    <HomeStack.Screen name="Step1Review" component={Step1Review} options={{ headerShown: false }} /> 
                     <HomeStack.Screen name="Step2" component={Step2} options={{ headerShown: false }} /> 
                     <HomeStack.Screen name="Step2Review" component={Step2Review} options={{ headerShown: false }} /> 
                     <HomeStack.Screen name="Step3" component={Step3} options={{ headerShown: false }} /> 
-
+                    <HomeStack.Screen name="Step3Review" component={Step3Review} options={{ headerShown: false }} /> 
                 </HomeStack.Navigator>
             </NavigationContainer>
             </SafeAreaProvider>
@@ -60,7 +63,7 @@ const TabBar = ({ navigation }) => {
 
                 screenOptions={{
                     headerShown: false, tabBarStyle: {
-                        backgroundColor: 'rgba(255,255,255,0)',
+                        backgroundColor: 'white',
 
                     }
                 }}

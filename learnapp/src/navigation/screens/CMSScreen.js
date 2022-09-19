@@ -1,5 +1,5 @@
 //packages
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Dimensions, ImageBackground, View, SafeAreaView, Text } from 'react-native';
 import commanStyles from '../../styles/commanStyles';
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -9,12 +9,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CheckBox from '@react-native-community/checkbox';
 import { Dropdown } from 'react-native-material-dropdown-v2';
 import { useIsFocused } from "@react-navigation/native";
-import Api from '../components/auth/Api';
+import Api from '../components/auth/Api'
+
 
 //Main Function
-const CMSScreen = ({  route, navigation }) => {
+const CMSScreen = ({ route, navigation }) => {
 
-    const [ txtName, setName ] = useState('');
+    const [txtName, setName] = useState('');
     const [txtEmail, setEmail] = useState('');
     const [txtPassword, setTxtPassword] = useState('');
     const [txtRole, setRole] = useState('');
@@ -52,11 +53,37 @@ const CMSScreen = ({  route, navigation }) => {
             AlertDiolog("Please accept the Privacy Policy");
         } else {
             setLoader(true)
-            var a = Api(apiName = 'user', data = { "firstName": txtName, "email": txtEmail, "password": txtPassword, "role": txtRole }, method = 'POST');
-            a.then((result) => signup(result))
+           
+            let parms = {
+                "firstName": txtName,
+                "email": txtEmail,
+                "password": txtPassword,
+                "role": txtRole
+            }
+
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(parms)
+            };
+
+            setTimeout(async () => {
+                let response = await fetch('https://lac-test-api.herokuapp.com/api/v1/user', requestOptions)
+                if (response && response.status === 401) {
+                    console.error('There was an error 401!');
+                } else if (response) {
+                    const data = await response.json()
+                    console.log('Here is the response of Sign up user details!',data);
+                    signup(data)
+                } else {
+                    console.error('There was an error!');
+                }
+            })
+            
+           
         }
     }
-  
+
     const signup = (result) => {
         setLoader(false)
         if (result.success == false) {
@@ -64,11 +91,11 @@ const CMSScreen = ({  route, navigation }) => {
         } else {
             navigation.navigate('VerifyEmail', { Email: txtEmail })
         }
-       
+
     }
 
     //View will appear 
-    const isFocused = useIsFocused();   
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         if (isFocused) {
@@ -93,7 +120,7 @@ const CMSScreen = ({  route, navigation }) => {
                             </Btn>
                         </View>
 
-                        <View style={{ width: '90%', height: height / 10, alignSelf: 'center' }}>
+                        <View style={{ width: '90%', height: 100, alignSelf: 'center' }}>
                             <TextBold children="ENTER YOUR EMAIL" size={height / 35} color='#fff' />
                             <TextBold children="We'll use this address to create your account" size={height / 45} color='#fff' />
                         </View>
@@ -108,14 +135,14 @@ const CMSScreen = ({  route, navigation }) => {
                                 onChangeText={(value) => setRole(value)}
                                 style={{ baseColor: 'white' }}
                             />
-                            
+
                         </View>
 
 
                         <View style={{ width: '95%', alignSelf: 'center', flexDirection: 'row' }}>
                             <View style={{ width: '10%', alignSelf: 'center' }}>
                                 <CheckBox
-                                    value={isSelected}
+                                    value={isSelected1}
                                     onValueChange={setSelection1}
                                     style={styles.checkbox}
                                     onFillColor={"#fff"}
@@ -130,7 +157,7 @@ const CMSScreen = ({  route, navigation }) => {
                         <View style={{ width: '95%', alignSelf: 'center', flexDirection: 'row' }}>
                             <View style={{ width: '10%', alignSelf: 'center' }}>
                                 <CheckBox
-                                    value={isSelected}
+                                    value={isSelected2}
                                     onValueChange={setSelection2}
                                     style={styles.checkbox}
                                     onFillColor={"#fff"}
@@ -145,7 +172,7 @@ const CMSScreen = ({  route, navigation }) => {
                         <View style={{ width: '95%', alignSelf: 'center', flexDirection: 'row' }}>
                             <View style={{ width: '10%', alignSelf: 'center' }}>
                                 <CheckBox
-                                    value={isSelected}
+                                    value={isSelected3}
                                     onValueChange={setSelection3}
                                     style={styles.checkbox}
                                     onFillColor={"#fff"}
@@ -160,7 +187,7 @@ const CMSScreen = ({  route, navigation }) => {
                         <View style={{ width: '95%', alignSelf: 'center', flexDirection: 'row' }}>
                             <View style={{ width: '10%', alignSelf: 'center' }}>
                                 <CheckBox
-                                    value={isSelected}
+                                    value={isSelected4}
                                     onValueChange={setSelection4}
                                     style={styles.checkbox}
                                     onFillColor={"#fff"}
@@ -175,7 +202,7 @@ const CMSScreen = ({  route, navigation }) => {
                         <View style={{ width: '95%', alignSelf: 'center', flexDirection: 'row' }}>
                             <View style={{ width: '10%', alignSelf: 'center' }}>
                                 <CheckBox
-                                    value={isSelected}
+                                    value={isSelected5}
                                     onValueChange={setSelection5}
                                     style={styles.checkbox}
                                     onFillColor={"#fff"}
@@ -209,6 +236,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         height: 25,
         width: 25,
+
     },
     label: {
         width: '90%',

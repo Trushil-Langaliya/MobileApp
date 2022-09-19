@@ -6,6 +6,7 @@ export const userpass = 'password'
 export const userToken = 'userToken'
 export const userRole = 'user_role'
 export const userData = 'userData'
+export const checkin = 'checkin'
 
 export const setData = async (strKey, item) => {
     let value = JSON.stringify(item)

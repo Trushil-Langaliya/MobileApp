@@ -356,7 +356,7 @@ export default function InputBox(props) {
           },
           input: {
             fontSize: 15,
-            height: props.height,
+            height: 50,
             color: '#fff',
             borderBottomColor: '#fff',
             borderBottomWidth: 2,

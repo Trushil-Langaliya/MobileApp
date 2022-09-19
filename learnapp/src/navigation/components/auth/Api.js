@@ -15,7 +15,7 @@ const Api = (apiName, data, method,accesstoken) => {
             method: `${method}`,
             headers: {
               'Content-Type': 'application/json',
-              'accessToken' : `Bearer${accesstoken}`
+              'accessToken' : `Bearer ${accesstoken}`
             },                
                 body:  JSON.stringify(data),
             }

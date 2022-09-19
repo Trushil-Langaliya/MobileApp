@@ -1,6 +1,6 @@
 //packages
 import React, { useState } from 'react';
-import { StyleSheet, Dimensions, View, ImageBackground } from 'react-native';
+import { StyleSheet, Dimensions, View, ImageBackground,Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import commanStyles from '../../styles/commanStyles';
@@ -63,11 +63,11 @@ const LandingScreen = ({ navigation }) => {
                     ))}
                 </View>
 
-                <View style={{ position: 'absolute', left: 15, bottom: 100 }}>
+                <View style={{ position: 'absolute', left: 20, bottom: Platform.OS === 'ios' ? 100 : 35 }}>
                     <Btn children='SKIP' height={height / 30} width={width / 5} txtSize={height / 60} txtClr='#fff' onPress={Skip} />
                 </View>
 
-                <View style={{ position: 'absolute', right: 25, bottom: 100, height: 60, width: 60, borderRadius: 30, }}>
+                <View style={{ position: 'absolute', right: 25, bottom: Platform.OS === 'ios' ? 100 : 35, height: 60, width: 60, borderRadius: 30, }}>
                     <Btn height='100%' width='100%' radius={30} color='#fff' onPress={Next}>
                         <FontAwesomeIcon icon={faAngleRight} size={25} />
                     </Btn>
@@ -102,8 +102,8 @@ const LandingScreen = ({ navigation }) => {
                             source={require('../../../assets/bgLanding.png')}
                             style={[commanStyles.mainView, { alignItems: 'center' }]}
                         >
-                            <View style={{ marginVertical: height / 40 }} />
-                            <CustomImg src={require('../../../assets/L&co_logo_white.png')} height='70%' width='100%' resizeMode='contain' />
+                            <View style={{ marginVertical: height / 25 }} />
+                            <CustomImg src={require('../../../assets/L&co_logo_white.png')} height={300} width='100%' resizeMode='contain' />
                         </ImageBackground>
                         <Pagination />
                     </View>
@@ -122,12 +122,12 @@ const LandingScreen = ({ navigation }) => {
                             source={require('../../../assets/bgLanding.png')}
                             style={[commanStyles.mainView, commanStyles.centerView]}
                         >
-                            <View style={{ width: '80%', height: '60%', alignSelf: 'center' }}>
+                            <View style={{ width: '80%', height: '50%', alignSelf: 'center' }}>
                                 <View style={{ alignItems: 'flex-start' }}>
-                                    <TextBold children='LANGUAGE COURSES FOR ANY LEVEL' color='#fff' size={height / 32} />
+                                    <TextBold children='LANGUAGE COURSES FOR ANY LEVEL' color='#fff' size={height / 35} />
                                     <View style={{ marginVertical: 2 }} />
                                     <View style={{ alignContent: 'flex-start', width: '100%' }}>
-                                        <TextRegular children="Age. Knowlege. Ability. It doesn't matter. Learn&Co is here for everybody" color='#F8F0E3' size={height / 32} />
+                                        <TextRegular children="Age. Knowlege. Ability. It doesn't matter. Learn&Co is here for everybody" color='#F8F0E3' size={height / 35} />
                                     </View>
                                 </View>
                             </View>
@@ -149,11 +149,11 @@ const LandingScreen = ({ navigation }) => {
                             source={require('../../../assets/bgLanding.png')}
                             style={[commanStyles.mainView, commanStyles.centerView]}
                         >
-                            <View style={{ width: '80%', height: '60%', alignSelf: 'center' }}>
+                            <View style={{ width: '80%', height: '50%', alignSelf: 'center' }}>
                                 <View style={{ alignItems: 'flex-start' }}>
-                                    <TextBold children='LESSONS TO LOOK FORWORD TO' color='#fff' size={height / 32} />
+                                    <TextBold children='LESSONS TO LOOK FORWORD TO' color='#fff' size={height / 35} />
                                     <View style={{ marginVertical: 2 }} />
-                                    <TextRegular children="Enjoy interactive sessions and a plan that's built just for you with captivating teachers." color='#F8F0E3' size={height / 35} />
+                                    <TextRegular children="Enjoy interactive sessions and a plan that's built just for you with captivating teachers." color='#F8F0E3' size={height / 38} />
                                 </View>
                             </View>
                         </ImageBackground>
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
 
     paginationWrapper: {
         position: 'absolute',
-        bottom: 140,
+        bottom: Platform.OS === 'ios' ? 140 : 70,
         left: 30,
         justifyContent: 'center',
         alignItems: 'center',

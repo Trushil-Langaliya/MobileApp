@@ -150,7 +150,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
 
           </View>
-          <View style={{ marginVertical: 10, height: height / 2.7, width: '100%' }}>
+          <View style={{ marginVertical: 30, height: height / 2.7, width: '100%' }}>
             <TouchableOpacity style={{ height: '100%', width: '100%' }} onPress={() => navigation.navigate('Checkin')}>
               <CustomImg src={require('../../../assets/endImage.png')} height="100%" width="100%" radius={10} resizeMode="cover" />
             </TouchableOpacity>

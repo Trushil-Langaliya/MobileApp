@@ -58,8 +58,30 @@ const Signin = ({ navigation }) => {
             AlertDiolog("The password field must be at least 8 characters.");
         } else {
             setLoader(true)
-            var a = Api(apiName = '.auth', data = { "email": txtEmail, "password": txtPassword }, method = 'POST');
-            a.then((result) => setdata(result))
+          
+            let parms = {
+                "email": txtEmail, 
+                "password": txtPassword
+            }
+
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(parms)
+            };
+
+            setTimeout(async () => {
+                let response = await fetch('https://lac-test-api.herokuapp.com/api/v1/.auth', requestOptions)
+                if (response && response.status === 401) {
+                    console.error('There was an error 401!');
+                } else if (response) {
+                    const data = await response.json()
+                    console.log('Here is the sign in user data:::',data);
+                    setdata(data)
+                } else {
+                    console.error('There was an error!');
+                }
+            })
         }
     }
 
@@ -158,7 +180,7 @@ const Signin = ({ navigation }) => {
                                     value={txtEmail}
                                     style={{
                                         fontSize: 15,
-                                        height: height / 20,
+                                        height: 50,
                                         color: '#fff',
                                         borderBottomColor: '#fff',
                                         borderBottomWidth: 2,
@@ -172,7 +194,7 @@ const Signin = ({ navigation }) => {
                                     value={txtPassword}
                                     style={{
                                         fontSize: 15,
-                                        height: height / 30,
+                                        height: 50,
                                         color: '#fff',
                                         borderBottomColor: '#fff',
                                         borderBottomWidth: 2,

@@ -42,11 +42,6 @@ const ProfileScreen = ({ navigation }) => {
             ]
         );
     }
-
-
-
-
-
     //Return  View
     return (
         <SafeAreaView>

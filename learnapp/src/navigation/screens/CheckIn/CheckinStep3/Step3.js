@@ -3,123 +3,109 @@ import { View, Image, StyleSheet, TouchableOpacity, ScrollView, Text, Dimensions
 import { FlatList } from 'react-native-gesture-handler';
 import { List } from '../../../components/list';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
+import { useIsFocused } from "@react-navigation/native";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Progress from 'react-native-progress';
-import { Btn, CustomImg, TextBold } from '../../../components/CommanComponents';
+import { Btn, CustomImg, Loader, TextBold } from '../../../components/CommanComponents';
 import commanStyles from '../../../../styles/commanStyles';
+import * as Store from '../../../components/auth/Store'
 
 //Main Function
 const Step3 = ({ navigation }) => {
 
+    const isFocused = useIsFocused();
+    const [loader, setLoader] = useState(true)
+    const [checkin, setCheckin] = useState(false)
+    const [data, setData] = useState('');
+    const [data1, setData1] = useState(['']);
 
-    const checkInSteps = [
-        {
-            id: '1',
-            title: 'Grammer',
-        },
-        {
-            id: '2',
-            title: 'Listening',
-        },
-        {
-            id: '3',
-            title: 'Reading',
-        },
-        {
-            id: '4',
-            title: 'Speaking',
-        },
-        {
-            id: '5',
-            title: 'Writing',
-        },
-    ];
+    useEffect(() => {
+        if (isFocused) {
+            setLoader(true)
+            setTimeout(async () => {
+                var usercheckin = await Store.getData(Store.checkin)
+                setCheckin(usercheckin)
+                console.log("tellUsHowYouFeel *************", usercheckin.data.tellUsHowYouFeel)
+                setLoader(false)
+            })
 
-    var checkInresults = [
-        {
-            id: '1',
-            title: 'Need a break',
-            percentage: 0,
-            click: false,
-        },
-        {
-            id: '2',
-            title: 'Need more',
-            percentage: 20,
-            click: false,
-        },
-        {
-            id: '3',
-            title: 'Need the Same',
-            percentage: 80,
-            click: false,
-        },
-    ];
+        }
+    }, [isFocused]);
 
+   
     const [open, setOpen] = useState(false)
     const [openNumber, setOpenNumber] = useState('')
 
-    const OpenDropdown = (id) => {
-        console.log("id is:;", id)
+    const OpenDropdown = (heading, index) => {
+        setData1(index)
         setOpen(!open)
-        setOpenNumber(id)
+        setOpenNumber(heading)
     }
+
     //design of recent steps
-    const Steps = ({ item }) => (
-        <View>
-            <View style={{ height: height / 12, width: width, justifyContent: 'center', alignItems: 'center' }}>
-                <TouchableOpacity style={{ height: "100%", width: "100%", justifyContent: 'center', alignItems: 'center' }} onPress={() => OpenDropdown(item.id)}>
-                    <View style={[styles.item, { width: '90%', height: '100%', flexDirection: 'row', alignItems: 'center', borderRadius: 10 }]}>
-                        <View style={{ flexDirection: 'column', width: '100%' }}>
-                            <TextBold children={item.title} size={height / 35} />
-                            <View style={{ marginVertical: 5 }} />
-                            <View style={{ height: 2, backgroundColor: '#E6E9F1', width: '100%' }} />
+    const Steps = ({ item, index }) => {
+        setData(item)
+
+        return (
+            <View>
+                <View style={{ height: height / 12, width: width, justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity style={{ height: "100%", width: "100%", justifyContent: 'center', alignItems: 'center' }} onPress={() => OpenDropdown(item.heading, index)}>
+                        <View style={[styles.item, { width: '90%', height: '100%', flexDirection: 'row', alignItems: 'center', borderRadius: 10 }]}>
+                            <View style={{ flexDirection: 'column', width: '100%' }}>
+                                <TextBold children={item.heading} size={height / 35} />
+                                <View style={{ marginVertical: 5 }} />
+                                <View style={{ height: 2, backgroundColor: '#E6E9F1', width: '100%' }} />
+                            </View>
                         </View>
-                    </View>
-                    <View style={{ width: 30, height: 30, position: 'absolute', right: 30 }}>
-                        <Btn height='100%' width='100%' radius={30} onPress={() => OpenDropdown(item.id)}>
-                            <CustomImg src={require('../../../../../assets/right_arrow.png')} height={25} width={25} />
-                        </Btn>
-                    </View>
-                </TouchableOpacity>
+                        <View style={{ width: 30, height: 30, position: 'absolute', right: 30 }}>
+                            <Btn height='100%' width='100%' radius={30} onPress={() => OpenDropdown(item.id)}>
+                                <CustomImg src={require('../../../../../assets/right_arrow.png')} height={25} width={25} />
+                            </Btn>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                {
+                    open ? openNumber == item.heading ? <List data={data.options} renderItem={ResultItem} /> : null : null
+                }
+
             </View>
-            {
-                open ? openNumber == item.id ? <List data={checkInresults} renderItem={ResultItem} /> : null : null
-            }
+        )
+    };
 
-        </View>
-    );
 
-    const pressClick = (item, index) => {
-
-        console.log("index is::", index)
-        // for(i=0; i<checkInresults.length; i++){
-        //     if(checkInresults[index].click==false){
-        //         console.log("id is::",checkInresults[index].id)
-        //         console.log("click is::",checkInresults[index].click)
-        //         checkInresults[index].click = true;
-        //      break;
-        //     }  
-        // }
-        // console.log("clicks is::",checkInresults[index].click)
-        // setOpen(open)
-    }
     //design of recent steps
-    const [pressed, setPressed] = useState(false);
     const ResultItem = ({ item, index }) => {
 
 
+
         const onPress = () => {
-            setPressed(prevPressed => !prevPressed);
+            let newArr = [...checkin.data.reflectionOnNextSteps];
+            // newArr[data1].values[index].isChecked = !newArr[data1].values[index].isChecked
+
+            if (index == 0) {
+                newArr[data1].options[index].isChecked = !newArr[data1].options[index].isChecked
+                newArr[data1].options[1].isChecked = false
+                newArr[data1].options[2].isChecked = false
+            } else if (index == 1) {
+                newArr[data1].options[index].isChecked = !newArr[data1].options[index].isChecked
+                newArr[data1].options[0].isChecked = false
+                newArr[data1].options[2].isChecked = false
+            } else {
+                newArr[data1].options[index].isChecked = !newArr[data1].options[index].isChecked
+                newArr[data1].options[0].isChecked = false
+                newArr[data1].options[1].isChecked = false
+            }
+
+            console.log("new array::", newArr[data1].options[index])
+            setData(newArr)
         }
         return (
             <View style={{ height: height / 12, width: width, justifyContent: 'center', alignItems: 'center' }}>
                 <TouchableOpacity style={{ height: "100%", width: "100%", justifyContent: 'center', alignItems: 'center' }} onPress={onPress}>
-                    <View style={[styles.item, pressed == true ? { backgroundColor: '#1B45AF' } : { backgroundColor: '#E6E9F1' }, { width: '90%', height: '80%', flexDirection: 'row', alignItems: 'center', borderRadius: 20 }]}>
+                    <View style={[styles.item, checkin.data.reflectionOnNextSteps[data1].options[index].isChecked == true ? { backgroundColor: '#1B45AF' } : { backgroundColor: '#E6E9F1' }, { width: '90%', height: '80%', flexDirection: 'row', alignItems: 'center', borderRadius: 20 }]}>
                         <View style={{ flexDirection: 'column', marginLeft: height / 30 }}>
-                            <TextBold children={item.title} size={height / 40} color={pressed == true ? 'white' : 'black'} />
+                            <TextBold children={item.title} size={height / 40} color={checkin.data.reflectionOnNextSteps[data1].options[index].isChecked == true ? 'white' : 'black'} />
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -128,8 +114,62 @@ const Step3 = ({ navigation }) => {
     };
 
     const btnSave = () => {
-        navigation.navigate('Step2')
+        setLoader(true)
+        let newparms = {
+            'measureYourProgress': checkin.data.measureYourProgress,
+            'tellUsHowYouFeel': checkin.data.tellUsHowYouFeel,
+            'reflectionOnNextSteps': checkin.data.reflectionOnNextSteps
+        }
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N1ZXIiOiJodHRwczovL2xhYy10ZXN0LWFwaS5oZXJva3VhcHAuY29tIiwiaWF0IjoxNjYyMDM1OTYyNzg2LCJhdWRpZW5jZSI6WyJodHRwOi8vbG9jYWxob3N0LyIsImh0dHBzOi8vbGFjLXRlc3Qtc2l0ZS5oZXJva3VhcHAuY29tIl0sInN1YmplY3QiOiI2MzBmMjE4ZDdmNWYyZjMyNmM1MTIyNzgiLCJzY29wZSI6WyJjbGllbnQiXSwic3RhdHVzIjoiYWN0aXZlIiwiZXhwIjoxNjYyMDM1OTY2Mzg2fQ.vj-HMgKtWGgnzI0DFrB5h69GsLw5mJSAaafXWvrlrSA' },
+            body: JSON.stringify(newparms)
+        };
+
+        setTimeout(async () => {
+            let response = await fetch('https://lac-test-api.herokuapp.com/api/v1/checkIn', requestOptions)
+            if (response && response.status === 401) {
+                console.error('There was an error 401!');
+            } else if (response) {
+                const data = await response.json()
+
+                setTimeout(async () => {
+
+                    var userStoredToken = await Store.getData(Store.userToken)
+                    // var userStoredToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N1ZXIiOiJodHRwczovL2xhYy10ZXN0LWFwaS5oZXJva3VhcHAuY29tIiwiaWF0IjoxNjYyMDM1OTYyNzg2LCJhdWRpZW5jZSI6WyJodHRwOi8vbG9jYWxob3N0LyIsImh0dHBzOi8vbGFjLXRlc3Qtc2l0ZS5oZXJva3VhcHAuY29tIl0sInN1YmplY3QiOiI2MzBmMjE4ZDdmNWYyZjMyNmM1MTIyNzgiLCJzY29wZSI6WyJjbGllbnQiXSwic3RhdHVzIjoiYWN0aXZlIiwiZXhwIjoxNjYyMDM1OTY2Mzg2fQ.vj-HMgKtWGgnzI0DFrB5h69GsLw5mJSAaafXWvrlrSA'
+                    return fetch(`https://lac-test-api.herokuapp.com/api/v1/checkIn`
+                        , {
+                            method: `GET`,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${userStoredToken}`
+                            },
+                        }
+                    )
+                        .then((response) => response.json())
+                        .then(response => {
+                            // console.log("checkIn API response :::", response.data.measureYourProgress[0]);
+                            Store.setData(Store.checkin, response)
+                            
+                            setLoader(false)
+                        })
+                        .catch(error => {
+                            console.error(`Error: ${error}`)
+                        });
+
+                })
+            } else {
+                console.error('There was an error!');
+            }
+        })
+
     }
+
+    const Next = () => {
+        navigation.navigate('Step3Review')
+    }
+
     //Return  View
     return (
         <SafeAreaView style={{ backgroundColor: 'white' }}>
@@ -154,14 +194,19 @@ const Step3 = ({ navigation }) => {
                         </View>
 
                         <View style={{ marginVertical: 10 }} />
-                        <View style={open == true ? { height: height - 120 } : { height: height / 2.3 }}>
-                            <List data={checkInSteps} renderItem={Steps} />
-                        </View>
+
+                        {
+                            loader ? <Loader />
+                                :
+                                <View style={open == true ? { height: height - 120 } : { height: height / 2.3 }}>
+                                    <List data={checkin.data.reflectionOnNextSteps} renderItem={Steps} />
+                                </View>
+                        }
 
                         <Btn children="Save" width="90%" height={height / 15} color="#1B45AF" txtClr="white" radius={20} txtSize={height / 35} onPress={btnSave} />
                         <View style={{ marginVertical: 40 }} />
                         <View style={{ position: 'absolute', right: 25, bottom: 10, height: 60, width: 60, borderRadius: 30, }}>
-                            <Btn height='100%' width='100%' radius={30} color='#1B45AF' >
+                            <Btn height='100%' width='100%' radius={30} color='#1B45AF' onPress={Next} >
                                 <FontAwesomeIcon icon={faAngleRight} size={25} color="#fff" />
                             </Btn>
                         </View>
