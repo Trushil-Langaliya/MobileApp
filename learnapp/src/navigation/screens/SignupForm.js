@@ -33,7 +33,7 @@ const SignupForm = ({ navigation }) => {
 
 
 
-    
+
     const btnAge = [{
         id: '1', // acts as primary key, should be unique and non-empty string
         name: '24-29',
@@ -94,10 +94,16 @@ const SignupForm = ({ navigation }) => {
     const { currentPage: pageIndex } = sliderState;
 
     const Next = () => {
+
+        for (i = 0; i < checkboxValue.length; i++){
+            if (checkboxValue[i].checked == true){
+                selectedclient(checkboxValue[i].label)
+            }
+        }
+
         var { currentPage } = sliderState;
         currentPage = currentPage + 1
         nextRef.scrollTo({ x: currentPage * width, y: 0, animated: true })
-        console.log('Selcted tution for is ::', checkedItems)
         if (currentPage == '5') {
             navigation.navigate('TabBar')
         }
@@ -142,7 +148,7 @@ const SignupForm = ({ navigation }) => {
         setCheckedItems({ ...checkedItems, [event.target.name]: event.target.checked });
     }
     useEffect(() => {
-        console.log("checkedItems: ", checkedItems);
+    
     }, [checkedItems]);
 
     const checkboxes = [
@@ -156,6 +162,33 @@ const SignupForm = ({ navigation }) => {
             name: 'OTHERS',
         }
     ];
+
+    //Select type of client
+    const [client, selectedclient] = useState(false);
+    const [checkboxValue, setCheckboxValue] = React.useState([
+        { label: 'Parent | Exam student', value: 'Parent | Exam student', checked: false },
+        { label: 'Adult student', value: 'Adult student', checked: false },
+        { label: 'Corporate client', value: 'Corporate client', checked: false },
+    ])
+
+    const checkboxHandler = (value, index) => {
+        const newValue = checkboxValue.map((checkbox, i) => {
+            if (i !== index)
+                return {
+                    ...checkbox,
+                    checked: false,
+                }
+            if (i === index) {
+                const item = {
+                    ...checkbox,
+                    checked: !checkbox.checked,
+                }
+                return item
+            }
+            return checkbox
+        })
+        setCheckboxValue(newValue)
+    }
 
     //Return  View
     return (
@@ -200,6 +233,31 @@ const SignupForm = ({ navigation }) => {
                     <BtnNext />
                 </View>
 
+                <View style={{ width, height }}>
+                    <View style={{ height: "100%", width: '100%' }}>
+                        <ImageBackground
+                            source={require('../../../assets/Splashbg.png')}
+                            style={[commanStyles.mainView, { alignItems: 'center' }]}
+                        >
+                            <ScrollView>
+                                <View style={{ marginVertical: 10 }} />
+                                <View style={{ height: 130, width: '40%', alignSelf: 'center' }}>
+                                    <CustomImg src={require('../../../assets/L&co_logo_white.png')} width='100%' height='100%' resizeMode='contain' />
+                                </View>
+                                <View style={{ width: '90%', margin: 10, alignSelf: 'center' }}>
+                                    <TextBold children="Select your type as a client" color="#fff" size={height / 40} />
+                                    {checkboxValue.map((checkbox, i) => (
+                                        <View style={styles.checkboxContainer} key={i}>
+                                            <Checkbox txt={checkbox.label} value={checkbox.checked} onValueChange={(value) => checkboxHandler(value, i)} />
+                                        </View>
+                                    ))}
+                                </View>
+                            </ScrollView>
+                        </ImageBackground>
+                    </View>
+                    <BtnNext />
+                </View>
+
 
                 <View style={{ width, height }}>
                     <View style={{ height: "100%", width: '100%' }}>
@@ -214,7 +272,7 @@ const SignupForm = ({ navigation }) => {
                                         <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
 
                                             <View style={{ marginVertical: 10 }} />
-                                            <View style={{ height: '15%', width: '40%', alignSelf: 'center' }}>
+                                            <View style={{ height: 130, width: '40%', alignSelf: 'center' }}>
                                                 <CustomImg src={require('../../../assets/L&co_logo_white.png')} width='100%' height='100%' resizeMode='contain' />
                                             </View>
                                             <View style={{ marginVertical: 10 }} />
@@ -344,7 +402,7 @@ const SignupForm = ({ navigation }) => {
                                     <View style={{ marginVertical: 10 }} />
                                     <View style={{ width: '80%', alignSelf: 'center' }}>
                                         <TextBold children="WHO'S THE TUITION FOR" color="#fff" size={height / 40} />
-                                       
+
                                         {
                                             checkboxes.map(item => (
                                                 <Checkbox txt={item.name} checked={checkedItems[item.name]} onChange={handleChange} />

@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import {View, SafeAreaView, TouchableOpacity, Text, StatusBar, ScrollView} from 'react-native';
 import {StyleSheet,Dimensions} from 'react-native'
 import CheckBox from '@react-native-community/checkbox';
-import AspectImage from '../../../Components/AspectImage';
+
 import styles from '../../styles/styles';
-import { BoldText } from '../../../Components/Text';
+import { CustomImg } from '../components/CommanComponents';
 
 //Main Function
 const SignupRoles = ({navigation}) => {
@@ -31,7 +31,7 @@ const SignupRoles = ({navigation}) => {
             <View style = {styles.container}>
                 <View style = {styles.mainView}>
                 <View style={{marginVertical: 12}}></View>
-                <AspectImage src={require('../../../assets/Man_on_laptop.png')} height={250} />
+                <CustomImg src={require('../../../assets/Man_on_laptop.png')} height={250}/>
                     <BoldText>Which are you signing up for?</BoldText>
                     <View style={{marginVertical: 12}}></View>
                     <View style = {style.checkBoxView}>

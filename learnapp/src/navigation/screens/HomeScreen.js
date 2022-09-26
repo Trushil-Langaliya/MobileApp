@@ -50,7 +50,9 @@ const HomeScreen = ({ navigation }) => {
 
 
 
-
+const btnPlanning = () => {
+  navigation.navigate('PlanningScreen')
+}
 
   const handleClick = () => {
     Linking.openURL(blogsdata.data.link).catch(err => console.error("Couldn't load page", err));
@@ -101,13 +103,13 @@ const HomeScreen = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
 
-              <View style={{ marginVertical: 10, justifyContent: 'center', alignItems: 'center', height: height / 2, width: '100%', borderWidth: 1, borderColor: 'black', borderRadius: 10, backgroundColor: '#EDEDF3' }}>
+              <View style={{ marginVertical: 10, justifyContent: 'center', alignItems: 'center', height: 400, width: '100%', borderWidth: 1, borderColor: 'black', borderRadius: 10, backgroundColor: '#EDEDF3' }}>
                 <CustomImg src={require('../../../assets/T3.png')} height={150} width={150} radius={10} />
                 <TextBold children="Plan ahead" size={height / 40} />
                 <View style={{ width: '80%', margin: 10 }}>
                   <TextRegular children="Tap below to plan the practice and exercies for your clients." size={height / 45} textAlign="center" />
                 </View>
-                <Btn children="Start Planning" radius={10} height={50} width='80%' txtClr="#ffffff" color="#051629" />
+                <Btn children="Start Planning" radius={10} height={50} width='80%' txtClr="#ffffff" color="#051629" onPress={btnPlanning}/>
               </View>
 
               <View style={{ marginVertical: 10, height: height / 3, width: '100%' }}>

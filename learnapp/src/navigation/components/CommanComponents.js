@@ -148,7 +148,6 @@ const Btn = ({ children, onPress, color, width, height, radius, txtClr, txtSize,
     const styles = {
         textBtn: {
             backgroundColor: color,
-            alignSelf: 'center',
             width: width,
             height: height,
             justifyContent: 'center',

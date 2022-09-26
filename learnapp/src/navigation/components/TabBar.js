@@ -16,6 +16,7 @@ import Step2Review from '../screens/CheckIn/CheckinStep2/Step2Review';
 import Step3 from '../screens/CheckIn/CheckinStep3/Step3';
 import Step1Review from '../screens/CheckIn/CheckinStep1/Step1Review';
 import Step3Review from '../screens/CheckIn/CheckinStep3/Step3Review';
+import PlanningScreen from '../screens/Planning/PlanningScreens';
 
 
 //Main Function
@@ -46,11 +47,15 @@ const TabBar = ({ navigation }) => {
                     <HomeStack.Screen name="Step2Review" component={Step2Review} options={{ headerShown: false }} /> 
                     <HomeStack.Screen name="Step3" component={Step3} options={{ headerShown: false }} /> 
                     <HomeStack.Screen name="Step3Review" component={Step3Review} options={{ headerShown: false }} /> 
+
+                    <HomeStack.Screen name="PlanningScreen" component={PlanningScreen} options={{ headerShown: false }} /> 
                 </HomeStack.Navigator>
             </NavigationContainer>
             </SafeAreaProvider>
         );
     };
+
+    
     //Return  View
     return (
 

@@ -35,8 +35,9 @@ const ProfileScreen = ({ navigation }) => {
                 {
                     text: "Yes",
                     onPress: () => {
-                        // navigation.navigate('Signin')
                         Store.clearStorage()
+                        navigation.navigate('Signin')
+
                     },
                 },
             ]

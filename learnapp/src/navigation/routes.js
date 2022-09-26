@@ -1,10 +1,7 @@
-import React, { useEffect } from "react";
-
+import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ForgotScreen from './screens/ForgotScreen';
 import Signin from './screens/Signin';
-import Signup from './screens/Signup';
 import SignupRoles from './screens/SignupRoles';
 import SplashScreen from './screens/SplashScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -20,7 +17,6 @@ import SignupScreen from "./screens/SignupScreen";
 import CMSScreen from "./screens/CMSScreen";
 import VerifyEmail from "./screens/VerifyEmail";
 import SignupForm from "./screens/SignupForm";
-import CheckInSteps from "./screens/CheckIn/CheckinSteps";
 import Checkin from "./screens/CheckIn/Checkin";
 
 
@@ -36,8 +32,8 @@ const routes = () => {
         },
       };
     return (
-        <NavigationContainer theme={MyTheme}>
-            <Stack.Navigator>
+        <NavigationContainer theme={MyTheme} >
+            <Stack.Navigator initialRouteName="SplashScreen" screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ title: 'SplashScreen',headerShown: false }}></Stack.Screen>
                 <Stack.Screen name="LandingScreen" component={LandingScreen} options={{ title: 'LandingScreen',headerShown: false }}></Stack.Screen>
                 <Stack.Screen name="SignupScreen" component={SignupScreen} options={{ title: 'SignupScreen',headerShown: false }}></Stack.Screen>
@@ -52,11 +48,8 @@ const routes = () => {
                 <Stack.Screen name="Invoices" component={Invoices} options={{ title: 'Invoices',headerShown: false, gestureEnabled: false }}></Stack.Screen>
                 <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ title: 'Profile', headerShown: false,}}></Stack.Screen>
                 <Stack.Screen name="Checkin" component={Checkin} options={{ title: 'Checkin',headerShown: false  }}></Stack.Screen>  
-                <Stack.Screen name="CheckInSteps" component={CheckInSteps} options={{ title: 'CheckInSteps',headerShown: false  }}></Stack.Screen>  
                 <Stack.Screen name="CalenderScreen" component={CalendarScreen} options={{animation: 'none', title: 'CalenderScreen',headerShown: false  }}></Stack.Screen>  
-                <Stack.Screen name="ForgotScreen" component={ForgotScreen} options={{ title: 'ForgotScreen',headerShown: false, gestureEnabled: false  }}></Stack.Screen>
                 <Stack.Screen name="SignupRoles" component={SignupRoles} options={{ title: 'Signup Roles',headerShown: false}}/>
-                <Stack.Screen name="Signup" component={Signup} options={{ title: 'Signup',headerShown: false }}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
     );

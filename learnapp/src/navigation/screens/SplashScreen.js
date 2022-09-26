@@ -10,8 +10,6 @@ const SplashScreen = (props) => {
     useEffect(() => {
         setTimeout(async () => {
             var userStoredToken = await Store.getData(Store.userToken)
-            console.log("*************",userStoredToken)
-
             if(userStoredToken === ""){
                 props.naviation.navigate('LandingScreen')
             }else if(userStoredToken == null){

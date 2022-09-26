@@ -71,31 +71,43 @@ const Signin = ({ navigation }) => {
             };
 
             setTimeout(async () => {
-                let response = await fetch('https://lac-test-api.herokuapp.com/api/v1/.auth', requestOptions)
-                if (response && response.status === 401) {
-                    console.error('There was an error 401!');
-                } else if (response) {
-                    const data = await response.json()
-                    console.log('Here is the sign in user data:::',data);
-                    setdata(data)
-                } else {
-                    console.error('There was an error!');
-                }
+                return fetch('https://lac-test-api.herokuapp.com/api/v1/.auth', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "email": txtEmail, 
+                        "password": txtPassword
+                    })
+                  })
+                  .then((response) => response.json())
+                  .then((json) => {
+                    console.log('response',json);
+                    if (json.data.success == false){
+                        AlertDiolog(json.data.msg)
+                        setLoader(false)
+                    }else{
+                        setdata(json)
+                    }
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
             })
         }
     }
 
     setdata = (result) => {
         Store.setData(Store.userToken, result.data.accessToken)
-        // Store.setData(Store.userRole, result.data.userRole)
-
         setLoader(false)
         if (result.success == false) {
             AlertDiolog(`${result.data.msg}`)
         } else {
             if (result.data.status == 2){
                 console.log("2");
-                navigation.navigate('VerifyEmail', { Email: txtEmail })
+                // navigation.navigate('VerifyEmail', { Email: txtEmail })
+                navigation.navigate('SignupForm')
             }else if(result.data.status == 1){
                 setTimeout(async () => {
     

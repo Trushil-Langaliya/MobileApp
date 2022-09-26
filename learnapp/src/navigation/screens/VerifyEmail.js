@@ -4,7 +4,7 @@ import { StyleSheet, Dimensions, ImageBackground, View, SafeAreaView, Text,Touch
 import commanStyles from '../../styles/commanStyles';
 import InputBox, { AlertDiolog, Btn, CustomImg, Keyboard, TextBold, TextRegular } from '../components/CommanComponents';
 import { ScrollView } from 'react-native-gesture-handler';
-import AspectImage from '../../../Components/AspectImage';
+
 
 //Main Function
 const VerifyEmail = ({ route, navigation }) => {
