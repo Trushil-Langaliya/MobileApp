@@ -20,7 +20,7 @@ const UserData = () => {
               var a = await Api(apiName = 'user/me/all', data = { "accessToken": userStoredToken }, method = 'POST');
               a.then((result) => setApiResponse(result))
              
-              console.log("************",apiResponse)
+             
           })
       }
   }, [isFocused]);

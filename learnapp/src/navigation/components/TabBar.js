@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Animated, Alert, Dimensions, Image, Text } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import HomeScreen from '../screens/HomeScreen';
-import ClientScreeen from '../screens/ClientScreen';
-import Invoices from '../screens/Invoices';
 import ProfileScreen from '../screens/ProfileScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -17,6 +15,9 @@ import Step3 from '../screens/CheckIn/CheckinStep3/Step3';
 import Step1Review from '../screens/CheckIn/CheckinStep1/Step1Review';
 import Step3Review from '../screens/CheckIn/CheckinStep3/Step3Review';
 import PlanningScreen from '../screens/Planning/PlanningScreens';
+import Practice from '../screens/Planning/Practice';
+import Course from '../screens/Planning/Course';
+import EditPlan from '../screens/Planning/EditPlan';
 
 
 //Main Function
@@ -49,6 +50,9 @@ const TabBar = ({ navigation }) => {
                     <HomeStack.Screen name="Step3Review" component={Step3Review} options={{ headerShown: false }} /> 
 
                     <HomeStack.Screen name="PlanningScreen" component={PlanningScreen} options={{ headerShown: false }} /> 
+                    <HomeStack.Screen name="Practice" component={Practice}  options={{ headerShown: false }}/> 
+                    <HomeStack.Screen name="Course" component={Course}  options={{ headerShown: false }}/> 
+                    <HomeStack.Screen name="EditPlan" component={EditPlan}  options={{ headerShown: false }}/> 
                 </HomeStack.Navigator>
             </NavigationContainer>
             </SafeAreaProvider>
